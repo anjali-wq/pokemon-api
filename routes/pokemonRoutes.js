@@ -20,6 +20,17 @@ router.get('/:_name', (req, res) => {
                             pokemonDescription = flavour.flavor_text
                         }
                     })
+                    request.post({ url: 'https://api.funtranslations.com/translate/shakespeare.json', form: { text: pokemonDescription } }, function (err, httpResponse, body) {
+                        let translate = JSON.parse(body);
+                        if (translate.contents) {
+                            res.json({ name: pokemonName, description: translate.contents.translated })
+                        }
+                        else {
+
+                            res.json({ name: pokemonName, desciption: translate })
+                        }
+                    })
+
                 }
                 else {
                     res.json({ Error: "Error while sending request!" })
